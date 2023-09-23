@@ -39,13 +39,13 @@ class Perceptron:
 
         """
         self.w_ = np.zeros(1 + X.shape[1])  # First position corresponds to threshold
-        weightVariation = np.zeros(X.shape[1])
 
         for _ in range(self.n_iter):
             for dataSample, target in zip(X, y):
-                calculatedPrediction = np.dot(dataSample, self.w_[1:])
-                weightVariation[:] = self.eta * (target - calculatedPrediction) * dataSample[:]
-                self.w_[1:] += weightVariation[:]
+                calculatedPrediction = 1 if np.dot(dataSample, self.w_[1:]) + self.w_[0] >= 0.0 else -1
+                update = self.eta * (target - calculatedPrediction)
+                self.w_[0] += update
+                self.w_[1:] += update * dataSample[:]
 
     def predict(self, X):
         """Return class label.
