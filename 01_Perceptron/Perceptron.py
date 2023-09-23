@@ -2,7 +2,6 @@ import numpy as np
 
 
 class Perceptron:
-
     """Perceptron classifier.
 
     Parameters
@@ -40,14 +39,13 @@ class Perceptron:
 
         """
         self.w_ = np.zeros(1 + X.shape[1])  # First position corresponds to threshold
+        weightVariation = np.zeros(X.shape[1])
+
         for _ in range(self.n_iter):
-            for indexSample, dataSample in enumerate(X):
-                calculatedPrediction = 0
-                for indexFeature, singleFeature in enumerate(dataSample):
-                    calculatedPrediction += singleFeature * self.w_[indexFeature + 1]
-                for indexWeight in range(X.shape[1]):
-                    weightVariation = self.eta*(y[indexSample] - calculatedPrediction)*X[indexSample][indexWeight]
-                    self.w_[indexWeight + 1] += weightVariation
+            for dataSample, target in zip(X, y):
+                calculatedPrediction = np.dot(dataSample, self.w_[1:])
+                weightVariation[:] = self.eta * (target - calculatedPrediction) * dataSample[:]
+                self.w_[1:] += weightVariation[:]
 
     def predict(self, X):
         """Return class label.
@@ -56,14 +54,5 @@ class Perceptron:
             Return a list with classes
         """
 
-        predictions = np.zeros(X.shape[0])
-        for predictionIndex in range(predictions.shape[0]):
-            prediction = 0
-            for indexPredictionValue, predictionValue in enumerate(X[predictionIndex]):
-                prediction += predictionValue*self.w_[indexPredictionValue + 1]
-            if prediction >= 0:
-                prediction = 1
-            else:
-                prediction = -1
-            predictions[predictionIndex] = prediction
-        return predictions
+        predictions = np.dot(X, self.w_[1:])
+        return np.where(predictions >= 0, 1, -1)
