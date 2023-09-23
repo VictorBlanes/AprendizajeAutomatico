@@ -40,9 +40,14 @@ class Perceptron:
 
         """
         self.w_ = np.zeros(1 + X.shape[1])  # First position corresponds to threshold
-
-        # TODO: Put your code (fit algorithm)
-
+        for _ in range(self.n_iter):
+            for indexSample, dataSample in enumerate(X):
+                calculatedPrediction = 0
+                for indexFeature, singleFeature in enumerate(dataSample):
+                    calculatedPrediction += singleFeature * self.w_[indexFeature + 1]
+                for indexWeight in range(X.shape[1]):
+                    weightVariation = self.eta*(y[indexSample] - calculatedPrediction)*X[indexSample][indexWeight]
+                    self.w_[indexWeight + 1] += weightVariation
 
     def predict(self, X):
         """Return class label.
@@ -51,6 +56,14 @@ class Perceptron:
             Return a list with classes
         """
 
-        # TODO: Put your code
-
-        return np.random.randint(0, 2, size=X.shape[0])  # remove
+        predictions = np.zeros(X.shape[0])
+        for predictionIndex in range(predictions.shape[0]):
+            prediction = 0
+            for indexPredictionValue, predictionValue in enumerate(X[predictionIndex]):
+                prediction += predictionValue*self.w_[indexPredictionValue + 1]
+            if prediction >= 0:
+                prediction = 1
+            else:
+                prediction = -1
+            predictions[predictionIndex] = prediction
+        return predictions

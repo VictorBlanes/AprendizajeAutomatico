@@ -18,4 +18,5 @@ y_prediction = perceptron.predict(X)  # Prediu
 #  Resultats
 plt.figure(1)
 plt.scatter(X[:, 0], X[:, 1], c=y_prediction)  # Mostram el conjunt de mostres el color indica la classe
+plt.axline((0,0), slope=perceptron.w_[1]/perceptron.w_[2])
 plt.show()
