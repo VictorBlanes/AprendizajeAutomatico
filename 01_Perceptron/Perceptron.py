@@ -42,10 +42,13 @@ class Perceptron:
 
         for _ in range(self.n_iter):
             for dataSample, target in zip(X, y):
+                # Se calcula la prediccion con el resultado de la funcion de activacion y no con el producto escalar 
+                # del data sample con los pesos
                 calculatedPrediction = 1 if np.dot(dataSample, self.w_[1:]) + self.w_[0] >= 0.0 else -1
-                update = self.eta * (target - calculatedPrediction)
-                self.w_[0] += update
-                self.w_[1:] += update * dataSample[:]
+                delta_w = self.eta * (target - calculatedPrediction)
+                # Se cambia el bias con el ratio de update de los pesos because reasons
+                self.w_[0] += delta_w
+                self.w_[1:] += delta_w * dataSample[:]
 
     def predict(self, X):
         """Return class label.
