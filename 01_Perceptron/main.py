@@ -10,7 +10,6 @@ X, y = make_classification(n_samples=100, n_features=2, n_redundant=0, n_repeate
 
 y[y == 0] = -1  # La nostra implementació esta pensada per tenir les classes 1 i -1.
 
-
 perceptron = Perceptron()
 perceptron.fit(X, y)  # Ajusta els pesos
 y_prediction = perceptron.predict(X)  # Prediu
@@ -18,5 +17,15 @@ y_prediction = perceptron.predict(X)  # Prediu
 #  Resultats
 plt.figure(1)
 plt.scatter(X[:, 0], X[:, 1], c=y_prediction)  # Mostram el conjunt de mostres el color indica la classe
-plt.axline((0,0), slope=perceptron.w_[1]/perceptron.w_[2])
+
+origen = (0, perceptron.w_[0])
+m = perceptron.w_[1] / perceptron.w_[2]
+plt.axline(origen, slope=m)
+
 plt.show()
+
+# Pregunta: 1 -> Porque en la solucion para calcular la pendiente usa el primer peso en negativo?
+#           2 -> porque no usa el 0, 0 como origen?
+#           3 -> Porque se guarda el ratio de update en el bias? 
+#           4 -> Se hace el predict con el resultado de la funcion de activacion o con z?
+#                   R-> Se hace con el resultado de la funcion de activacion
