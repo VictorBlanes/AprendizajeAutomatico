@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Adaline:
     """ADAptive LInear NEuron classifier.
        Gradient Descent
@@ -19,6 +20,7 @@ class Adaline:
         Error in each epoch.
 
     """
+
     def __init__(self, eta=0.01, n_iter=50):
         self.eta = eta
         self.n_iter = n_iter
@@ -45,7 +47,11 @@ class Adaline:
         self.cost_ = []  # Per calcular el cost a cada iteració (EXTRA)
 
         for _ in range(self.n_iter):
-            # TODO: PUT YOUR CODE HERE
+            delta_w = np.zeros(X.shape[1])
+            for index in range(delta_w.shape[0]):
+                delta_w[index] = np.sum(self.eta * (y[:] - self.net_output(X[:])) * X[:, index])
+            self.w_[1:] += delta_w[:]
+            self.w_[0] += np.sum(self.eta * (y[:] - self.net_output(X[:])))
 
     def net_output(self, X):
         """Calculate net output"""
