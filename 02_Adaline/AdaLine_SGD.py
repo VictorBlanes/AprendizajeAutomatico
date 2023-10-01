@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.random import seed
 
+
 class Adaline(object):
     """ADAptive LInear NEuron classifier.
 
@@ -23,6 +24,7 @@ class Adaline(object):
         Set random state for shuffling and initializing the weights.
 
     """
+
     def __init__(self, eta=0.01, n_iter=10, shuffle=True, random_state=None):
         self.eta = eta
         self.n_iter = n_iter
@@ -49,7 +51,8 @@ class Adaline(object):
 
         """
         self.w_ = np.zeros(1 + X.shape[1])
-        self.cost_ = [] # Per calcular el cost a cada iteració (EXTRA)
+        self.cost_ = []  # Per calcular el cost a cada iteració (EXTRA)
+        delta_w = np.zeros(X.shape[1])
 
         for _ in range(self.n_iter):
 
@@ -57,10 +60,10 @@ class Adaline(object):
                 X, y = self.__shuffle(X, y)
 
             for xi, target in zip(X, y):
-
-               # TODO: Put your code here
-
-
+                for index in range(delta_w.shape[0]):
+                    delta_w[index] = self.eta * (target - self.net_output(xi)) * xi[index]
+                self.w_[1:] += delta_w[:]
+                self.w_[0:] += self.eta * (target - self.net_output(xi))
 
     def __shuffle(self, X, y):
         """Shuffle training data"""
